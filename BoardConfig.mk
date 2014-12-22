@@ -76,9 +76,6 @@ COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 COMMON_GLOBAL_CFLAGS += -DSAMSUNG_CAMERA_HARDWARE
 COMMON_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
 
-# TESTING [Support RSC on PVR]
-BOARD_USES_PVR_RSC := true
-
 # OMX
 BOARD_USE_STOREMETADATA := true
 BOARD_USE_METADATABUFFERTYPE := true
@@ -90,12 +87,6 @@ BOARD_USE_IMPROVED_BUFFER := true
 BOARD_USE_CSC_HW := false
 BOARD_USE_H264_PREPEND_SPS_PPS := false
 BOARD_USE_QOS_CTRL := false
-
-# TESTING [[HACK] It will be removed after updating s3c-fb driver.]
-BOARD_USE_WAIT_DEQUEUE_FENCE := false
-
-# TESTING [[HACK] It will be removed after implementing FENCE SYNC.]
-BOARD_USE_FENCE_SYNC := true
 
 # HWC Services
 BOARD_USES_HWC_SERVICES := true
@@ -119,9 +110,6 @@ BOARD_EGL_WORKAROUND_BUG_10194508 := true
 BOARD_USE_BGRA_8888 := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 5
 
-# Media
-COMMON_GLOBAL_CFLAGS += -DUSE_NATIVE_SEC_NV12TILED -DWIDEVINE_PLUGIN_PRE_NOTIFY_ERROR
-
 # NFC
 BOARD_NFC_HAL_SUFFIX := universal5410
 
@@ -142,9 +130,6 @@ WIFI_DRIVER_FW_PATH_STA          := "/system/etc/wifi/bcmdhd_sta.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 WIFI_DRIVER_FW_PATH_P2P          := "/system/etc/wifi/bcmdhd_p2p.bin"
 WIFI_BAND                        := 802_11_ABG
-
-# Webkit
-ENABLE_WEBGL := true
 
 # Filesystems
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8392704
