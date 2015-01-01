@@ -108,6 +108,12 @@
     <bool name="config_animateScreenLights">false</bool>
 
     <!-- Indicate whether the lid state impacts the accessibility of
+         the physical keyboard.  0 means it doesn't, 1 means it is accessible
+         when the lid is open, 2 means it is accessible when the lid is
+         closed.  The default is 0. -->
+    <integer name="config_lidKeyboardAccessibility">1</integer>
+
+    <!-- Indicate whether the lid state impacts the accessibility of
          the navigation buttons.  0 means it doesn't, 1 means it is accessible
          when the lid is open, 2 means it is accessible when the lid is
          closed.  The default is 0. -->
@@ -135,19 +141,6 @@
 
     <!-- Indicate whether the SD card is accessible without removing the battery. -->
     <bool name="config_batterySdCardAccessibility">true</bool>
-
-    <!-- Vibrator pattern for feedback about touching a virtual key -->
-    <integer-array name="config_virtualKeyVibePattern">
-        <item>0</item>
-        <item>1</item>
-        <item>20</item>
-        <item>21</item>
-    </integer-array>
-
-    <!-- Vibrator pattern for a very short but reliable vibration for soft keyboard tap -->
-    <integer-array name="config_keyboardTapVibePattern">
-        <item>20</item>
-    </integer-array>
 
     <!-- Display low battery warning when battery level dips to this value.
          Also, the battery stats are flushed to disk when we hit this level.  -->
