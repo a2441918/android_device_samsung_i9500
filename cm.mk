@@ -1,4 +1,4 @@
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,3 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
 	TARGET_DEVICE=ja3g \
 	BUILD_FINGERPRINT="samsung/ja3gxx/ja3g:4.4.2/KOT49H/I9500XXUFNI2:user/release-keys" \
 	PRIVATE_BUILD_DESC="ja3gxx-user 4.4.2 KOT49H I9500XXUFNI2 release-keys"
-
-# Lighter CM boot animation
-PRODUCT_BOOTANIMATION := device/samsung/i9500/bootanimation.zip

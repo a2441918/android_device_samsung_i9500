@@ -7,6 +7,9 @@
 # Disable GL Library Preload
 ro.zygote.disable_gl_preload=1
 
+# Disable Swaprect
+debug.sf.swaprect=0
+
 # Force GPU Rendering
 persist.sys.ui.hw=1
 
@@ -48,3 +51,8 @@ persist.sys.purgeable_assets=1
 
 # Enable Kernel Samepage Merging
 ro.ksm.default=1
+
+## OTA Updates ##
+ro.ota.romname=GearCM11
+ro.ota.version=20150709
+ro.ota.manifest=https://raw.githubusercontent.com/GearCM/android_device_samsung_i9500/cm-11.0_new/ota.xml

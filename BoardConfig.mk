@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# inherit from the proprietary version
+-include vendor/samsung/i9500/BoardConfigVendor.mk
+
 LOCAL_PATH := device/samsung/i9500
 
 BOARD_VENDOR := samsung
@@ -21,7 +24,7 @@ BOARD_VENDOR := samsung
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
-# Asserts
+# Assert
 TARGET_OTA_ASSERT_DEVICE := ja3g,i9500,GT-I9500
 
 # Bootloader
@@ -41,8 +44,13 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
 TARGET_CPU_VARIANT := cortex-a15
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-ArchiDroid
 
-# Bionic
+# Hint the compiler that we're using a quad-core CPU
+BOARD_GLOBAL_CFLAGS += -mvectorize-with-neon-quad
+BOARD_GLOBAL_CPPFLAGS += -mvectorize-with-neon-quad
+
+# Enable QC's libm optimizations
 TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 
 # Kernel
@@ -50,9 +58,12 @@ BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_CONFIG := cyanogenmod_i9500_defconfig
 TARGET_KERNEL_SOURCE := kernel/samsung/exynos5410
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := google-4.8-arm-eabi
 
 # Audio
+BOARD_HAVE_PRE_KITKAT_AUDIO_POLICY_BLOB := true
+BOARD_DYNAMIC_WIDEBAND_SWITCHING := false
+BOARD_HDMI_INCAPABLE := true
+COMMON_GLOBAL_CFLAGS += -DSAMPLE_RATE_48K
 BOARD_USES_LIBMEDIA_WITH_AUDIOPARAMETER := true
 
 # Bluetooth
@@ -61,18 +72,17 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_BLUEDROID_VENDOR_CONF := $(LOCAL_PATH)/bluetooth/libbt_vndcfg.txt
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
-# Boot Animation
-TARGET_BOOTANIMATION_PRELOAD := true
-TARGET_BOOTANIMATION_TEXTURE_CACHE := true
-
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
+
+# Logging
+TARGET_USES_LOGD := false
 
 # Camera
 BOARD_NEEDS_MEMORYHEAPION := true
 BOARD_CAMERA_MSG_MGMT := true
+TARGET_RELEASE_CPPFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 COMMON_GLOBAL_CFLAGS += -DDISABLE_HW_ID_MATCH_CHECK
-COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 COMMON_GLOBAL_CFLAGS += -DSAMSUNG_CAMERA_HARDWARE
 COMMON_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
 
@@ -88,7 +98,7 @@ BOARD_USE_CSC_HW := false
 BOARD_USE_H264_PREPEND_SPS_PPS := false
 BOARD_USE_QOS_CTRL := false
 
-# HW Composer
+# HWC Services
 BOARD_USES_HWC_SERVICES := true
 BOARD_USES_PRESENTATION_SUBTITLES := true
 BOARD_USES_CEC := true
@@ -99,16 +109,23 @@ BOARD_USES_GSC_VIDEO := true
 # FIMD
 BOARD_USES_FB_PHY_LINEAR := false
 
-# GPU
+# CMHW
+BOARD_HARDWARE_CLASS := device/samsung/i9500/cmhw
+
+# Graphics
 USE_OPENGL_RENDERER := true
 BOARD_EGL_SYSTEMUI_PBSIZE_HACK := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
-BOARD_USE_BGRA_8888 := true
-BOARD_EGL_CFG := $(LOCAL_PATH)/configs/egl.cfg
-COMMON_GLOBAL_CFLAGS += -DUSES_PVR_GPU
+BOARD_EGL_CFG := $(LOCAL_PATH)/configs/egl/egl.cfg
+COMMON_GLOBAL_CFLAGS += -DUSES_PVR_GPU -DEXYNOS_SUPPORT_BGRX_8888
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+TARGET_SAMSUNG_GRALLOC_EXTERNAL_USECASES := true
+
+# Widevine
+COMMON_GLOBAL_CFLAGS += -DWIDEVINE_PLUGIN_PRE_NOTIFY_ERROR -DADD_LEGACY_ACQUIRE_BUFFER_SYMBOL
+BOARD_USES_LEGACY_MMAP := true
 
 # NFC
 BOARD_NFC_HAL_SUFFIX := universal5410
@@ -116,6 +133,7 @@ BOARD_NFC_HAL_SUFFIX := universal5410
 # Radio
 BOARD_PROVIDES_LIBRIL := true
 BOARD_MODEM_TYPE := xmm6360
+BOARD_RIL_CLASS := ../../../device/samsung/i9500/ril
 
 # Wifi
 BOARD_HAVE_SAMSUNG_WIFI          := true
@@ -131,37 +149,101 @@ WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 WIFI_DRIVER_FW_PATH_P2P          := "/system/etc/wifi/bcmdhd_p2p.bin"
 WIFI_BAND                        := 802_11_ABG
 
+CONFIG_EAP_TLS                   := true
+CONFIG_EAP_TTLS                  := true
+CONFIG_EAP_PEAP                  := true
+CONFIG_EAP_MD5                   := true
+CONFIG_EAP_MSCHAPV2              := true
+CONFIG_EAP_SIM                   := true
+CONFIG_EAP_LEAP                  := true
+CONFIG_EAP_PSK                   := true
+CONFIG_EAP_AKA                   := true
+CONFIG_EAP_PWD                   := true
+CONFIG_EAP_IKEV2                 := true
+
+# Webkit
+ENABLE_WEBGL := true
+
 # Filesystems
-BOARD_BOOTIMAGE_PARTITION_SIZE := 8392704
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 9392704
+BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 8388608
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2898264064
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 9604956160
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 9604939776
 BOARD_FLASH_BLOCK_SIZE := 4096
 
 # PowerHAL
 TARGET_POWERHAL_VARIANT := universal5410
 
 # Recovery
-BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_USERIMAGES_USE_EXT4 := true
-BOARD_RECOVERY_SWIPE := true
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5410
-TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
+BOARD_HAS_DOWNLOAD_MODE := true
+
+BOARD_HAS_LARGE_FILESYSTEM := true
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5410
+
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+
+# TWRP Specific
+TW_THEME := portrait_mdpi
+
+TARGET_RECOVERY_DEVICE_MODULES += prebuilt_file_contexts
+
+RECOVERY_SDCARD_ON_DATA := true
+BOARD_HAS_NO_REAL_SDCARD := true
+
+TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+
+TW_NO_REBOOT_BOOTLOADER := true
+TW_HAS_DOWNLOAD_MODE := true
+
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel/brightness"
+TW_MAX_BRIGHTNESS := 255
+
+#TW_INCLUDE_L_CRYPTO := true
+
+TW_NO_EXFAT_FUSE := true
+TW_EXCLUDE_SUPERSU := true
+TW_EXCLUDE_ENCRYPTED_BACKUPS := true
+TW_DISABLE_TTF := true
 
 # Charging mode
-BOARD_BATTERY_DEVICE_NAME := battery
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
+BOARD_CHARGER_SHOW_PERCENTAGE := true
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
-BOARD_CHARGER_RES := device/samsung/i9500/charger
+RED_LED_PATH := "/sys/class/sec/led/led_r/brightness"
+GREEN_LED_PATH := "/sys/class/sec/led/led_g/brightness"
+BLUE_LED_PATH := "/sys/class/sec/led/led_b/brightness"
+BACKLIGHT_PATH := "/sys/class/backlight/panel/brightness"
+CHARGING_ENABLED_PATH := "/sys/class/power_supply/battery/batt_lp_charging"
 
-# CMHW
-BOARD_HARDWARE_CLASS += device/samsung/i9500/cmhw
+# SELinux
+#BOARD_SEPOLICY_DIRS := \
+#	device/samsung/i9500/sepolicy
+#
+#BOARD_SEPOLICY_UNION := \
+#	app.te \
+#	cpboot-daemon.te \
+#	domain.te \
+#	exyrngd.te \
+#	file.te \
+#	file_contexts \
+#	gpsd.te \
+#	kernel.te \
+#	lmkd.te \
+#	init.te \
+#	macloader.te \
+#	recovery.te \
+#	system_server.te \
+#	rild.te \
+#	ueventd.te \
+#	uncrypt.te \
+#	vold.te \
+#	wpa.te
 
 # Releasetools
 #TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)
-
-# inherit from the proprietary version
--include vendor/samsung/i9500/BoardConfigVendor.mk

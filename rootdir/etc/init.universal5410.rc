@@ -2,12 +2,19 @@ import init.universal5410.usb.rc
 import init.universal5410.wifi.rc
 
 on early-init
+	mount debugfs /sys/kernel/debug /sys/kernel/debug
+	
 	write /sys/block/mmcblk0/queue/scheduler noop
 
 # Increase max readahead size to 512 KB
 	write /sys/block/mmcblk0/queue/read_ahead_kb 512
 	write /sys/block/mmcblk1/queue/read_ahead_kb 512
 
+# Flash storage isn't a good entropy source, and only causes
+# locking overhead in the kernel. Turn it off.
+	write /sys/block/mmcblk0/queue/add_random 0
+	write /sys/block/mmcblk1/queue/add_random 0	
+	
 on init
 # See storage config details at http://source.android.com/devices/tech/storage/
 	mkdir /mnt/shell/emulated 0700 shell shell
@@ -47,13 +54,13 @@ on init
 
 	symlink /sys/devices/platform/s5p-ehci/ehci_power /dev/ehci_power
 
-# Enable pulsing led on boot
-	write /sys/class/sec/led/led_pattern 6
-
 on fs
 	mount_all /fstab.universal5410
-	setprop ro.crypto.fuse_sdcard true
 
+	setprop ro.crypto.fuse_sdcard true
+	setprop ro.build.product universal_5410
+	setprop ro.product.device universal_5410
+	
 on post-fs
 	chown system system /sys/block/mmcblk0/queue/scheduler
 	chown system system /sys/block/mmcblk1/queue/scheduler
@@ -64,83 +71,13 @@ on post-fs
 	chown system radio /sys/block/mmcblk0/bkops_en
 	chmod 0664 /sys/block/mmcblk0/bkops_en
 
-on post-fs-data
-	mkdir /data/media 0770 media_rw media_rw
-
-	mkdir /data/misc/radio 0775 radio system
-	mkdir /efs/imei 0775 radio system
-
-# Create data/gps for GPS daemon
-	mkdir /data/system/gps 771 gps system
-	chown system system /data/system
-
-# Create camera directory
-	mkdir /data/camera 0700 media media
-
-# Restore permissions for GPS
-	mkdir /data/system 0775 system system
-	chown system system /data/system/gps
-
-# Create Broadcom NFC folders
-	mkdir /data/bcmnfc 0700 nfc nfc
-	mkdir /data/bcmnfc/param 0700 nfc nfc
-
-# Create DivX DRM folders
-	mkdir /efs/.files 0775
-	mkdir /efs/.files/.dx1 0775 media system
-	mkdir /efs/.files/.dm33 0775 media system
-	mkdir /efs/.files/.mp301 0775 media system
-
-# Added for Samsung DRM
-	mkdir /system/etc/security/.drm 0775 root root
-	mkdir /efs/drm 0774 drm system
-	mkdir /efs/drm/sdrm 0774 drm system
-	mkdir /efs/drm/sdrm/data_agent 0774 drm system
-
-# Added for TZ Playready DRM Support
-	mkdir /efs/drm/playready 0775 drm system
-
-# SEAndroid Restore context for efs files
-	restorecon_recursive /efs
-
-# Set indication (checked by vold) that we have finished this action
-	setprop vold.post_fs_data_done 1
-
-on boot
-	mount debugfs /sys/kernel/debug /sys/kernel/debug
-
-# Reduce reserved lowmem from ~48MB to ~12MB
-	write /proc/sys/vm/lowmem_reserve_ratio "128 128"
-
 # Set up kernel tracing, but disable it by default
 	chmod 0222 /sys/kernel/debug/tracing/trace_marker
-	write /sys/kernel/debug/tracing/tracing_on 0
-
-	setprop ro.build.product universal_5410
-	setprop ro.product.device universal_5410
+	write /sys/kernel/debug/tracing/tracing_on 0	
 
 # 4.3 needs this
 	chmod 0644 /proc/cmdline
-
-# Flash storage isn't a good entropy source, and only causes
-# locking overhead in the kernel. Turn it off.
-	write /sys/block/mmcblk0/queue/add_random 0
-	write /sys/block/mmcblk1/queue/add_random 0
-
-# Reduce Screen Brightness while booting
-	write /sys/class/backlight/panel/brightness 10
-
-# Added for Mobicore
-	mkdir /data/app/mcRegistry 0775 system system
-
-# Permissions for Bluetooth
-	setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
-	chown bluetooth net_bt_stack ro.bt.bdaddr_path
-
-	chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
-	chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
-	chmod 0660 /sys/class/rfkill/rfkill0/state
-
+	
 # Permissions for Touchscreen
 	chown system radio /sys/class/sec/tsp/cmd
 	chown system radio /sys/class/sec/tsp/cmd_result
@@ -334,30 +271,44 @@ on boot
 	chmod 0660 /sys/class/devfreq/exynos5-busfreq-mif/freq_table
 
 # Permissions for Ondemand CPU Governor
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_h
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/high_freq_zone
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/conservative_step
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/up_conservative_mode
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_l
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_l
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_b
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_h
-	chown radio system /sys/devices/system/cpu/cpufreq/ondemand/game_mode
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_h
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/high_freq_zone
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/conservative_step
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/up_conservative_mode
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_l
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_l
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_b
-	chmod 0664 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/boost_mode
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/conservative_step
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/cpu_utilization
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/down_step_level
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/high_freq_zone
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/ignore_nice_load
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_h
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/max_freq_blank
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/power_save_bias
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate_min
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_conservative_mod
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_b
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_l
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_h
+	chown system system /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_l
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/boost_mode
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/conservative_step
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/cpu_utilization
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/down_step_level
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/high_freq_zone
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/ignore_nice_load
 	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_h
-	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/game_mode
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/max_freq_blank
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/power_save_bias
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate_min
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_conservative_mod
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_b
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_l
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_h
+	chmod 0660 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_l
 
 # Permissions for Core Control
 	chown radio system /dev/b.L_operator
@@ -403,7 +354,7 @@ on boot
 
 # Permissions for AMOLED Screen
 	chown system radio /sys/class/lcd/panel/lcd_type
-	chown system system /sys/class/lcd/panel/power_reduce
+	chown system media_rw /sys/class/lcd/panel/power_reduce
 	chown system system /sys/class/lcd/panel/siop_enable
 	chown system system /sys/class/lcd/panel/temperature
 	chmod 0660 /sys/class/lcd/panel/siop_enable
@@ -419,6 +370,11 @@ on boot
 # Permissions for GScaler Debug
 	chmod 0644 /sys/module/gsc/parameters/gsc_dbg
 
+# Permissions for MHL
+	chmod 0666 /sys/class/mhl/hdcp_support
+	chmod 0666 /sys/class/mhl/timing
+	chmod 0666 /sys/class/mhl/swing
+	
 # Permissions for Switch Device
 	chown system radio /sys/class/sec/switch/uart_sel
 	chown system radio /sys/class/sec/switch/usb_sel
@@ -460,12 +416,6 @@ on boot
 	chown root system /sys/class/sec/gps/GPS_PWR_EN/value
 	chmod 0664 /sys/class/sec/gps/GPS_PWR_EN/value
 
-# Clean-Up GPS Stuff
-	rm /data/gps_started
-	rm /data/glonass_started
-	rm /data/smd_started
-	rm /data/sv_cno.info
-
 # Permissions for MTP Device
 	chown system system /dev/usb_mtp_gadget
 	chmod 0660 /dev/usb_mtp_gadget
@@ -484,8 +434,91 @@ on boot
 	chmod 0644 /sys/class/timed_output/vibrator/pwm_threshold
 
 # Permissions for Torch
-	chown system camera /sys/class/leds/torch-sec1/brightness
-	chmod 0660 /sys/class/leds/torch-sec1/brightness
+	chown system system /sys/class/leds/torch-sec1/brightness
+	chmod 0667 /sys/class/leds/torch-sec1/brightness
+
+# Permissions for Bluetooth
+	setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
+	chown bluetooth net_bt_stack ro.bt.bdaddr_path
+
+	chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
+	chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
+	chmod 0660 /sys/class/rfkill/rfkill0/state
+
+# Permissions for Synapse
+	chmod 0777 /sbin/synapse.sh
+
+# Create EFS imei folder
+	mkdir /efs/imei 0775 radio system
+	
+# Create DivX DRM folders
+	mkdir /efs/.files 0775
+	mkdir /efs/.files/.dx1 0775 media system
+	mkdir /efs/.files/.dm33 0775 media system
+	mkdir /efs/.files/.mp301 0775 media system
+
+# Added for Samsung DRM
+	mkdir /system/etc/security/.drm 0775 root root
+	mkdir /efs/drm 0774 drm system
+	mkdir /efs/drm/sdrm 0774 drm system
+	mkdir /efs/drm/sdrm/data_agent 0774 drm system
+
+# Added for TZ Playready DRM Support
+	mkdir /efs/drm/playready 0775 drm system
+
+# SEAndroid Restore context for efs files
+	restorecon_recursive /efs
+	
+on post-fs-data
+	mkdir /data/media 0770 media_rw media_rw
+	
+	mkdir /data/radio 0770 radio radio
+
+# Restore permissions for GPS
+	mkdir /data/system 0775 system system
+	
+# Create data/gps for GPS daemon
+	mkdir /data/system/gps 0771 gps system
+
+# Create camera directory
+	mkdir /data/camera 0700 media media
+
+# Create Broadcom NFC folders
+	mkdir /data/bcmnfc 0700 nfc nfc
+	mkdir /data/bcmnfc/param 0700 nfc nfc
+
+# Added for Mobicore
+	mkdir /data/app/mcRegistry 0775 system system
+
+# Added for Playready DRM Support
+	mkdir /data/system/databases 0775 system system
+	mkdir /data/data/.drm 0775 drm system
+	mkdir /data/data/.drm/.playready 0775 drm system
+
+# Set indication (checked by vold) that we have finished this action
+	setprop vold.post_fs_data_done 1
+
+on boot
+# Set up KSM
+	write /sys/kernel/mm/ksm/deferred_timer 1
+	write /sys/kernel/mm/ksm/pages_to_scan 100
+	write /sys/kernel/mm/ksm/sleep_millisecs 500
+	write /sys/kernel/mm/ksm/run 1
+
+# Enable pulsing led on boot
+	write /sys/class/sec/led/led_pattern 6
+
+# Reduce reserved lowmem from ~48MB to ~12MB
+	write /proc/sys/vm/lowmem_reserve_ratio "128 128"
+
+# Reduce Screen Brightness while booting
+	write /sys/class/backlight/panel/brightness 10
+
+# Clean-Up GPS Stuff
+	rm /data/gps_started
+	rm /data/glonass_started
+	rm /data/smd_started
+	rm /data/sv_cno.info
 
 # GearCM Tweaks (from Perseus)
 	write /sys/devices/system/cpu/sched_mc_power_savings 2
@@ -493,7 +526,7 @@ on boot
 	write /sys/class/devfreq/exynos5-busfreq-mif/polling_interval 50
 	write /sys/class/devfreq/exynos5-busfreq-mif/time_in_state/upthreshold 70
 
-# Balanced values while booting
+# Acceptable values while booting
 	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_min_lock 177
 	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 350
 	
@@ -501,14 +534,15 @@ on boot
 	write /sys/class/devfreq/exynos5-busfreq-mif/max_freq 800000
 	
 	write /sys/class/thermal/thermal_zone0/boost_mode 1
-	
-# Set higher USB charging values using USB 3.0 capabilities
-	write /sys/devices/platform/sec-battery/sdp_input_curr 1000
-	write /sys/devices/platform/sec-battery/sdp_chrg_curr 1000
 
-# Set Standard mDNIe mode	
+# Set higher USB charging values as AC ones
+	write /sys/devices/platform/sec-battery/sdp_input_curr 1500
+	write /sys/devices/platform/sec-battery/sdp_chrg_curr 1300
+
+# Reset mDNIe mode & scenario
+	write /sys/class/mdnie/mdnie/scenario 0
 	write /sys/class/mdnie/mdnie/mode 0
-	
+
 # Configure Interactive CPU Governor
 	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1000000:40000 1500000:20000"
 	write /sys/devices/system/cpu/cpufreq/interactive/check_fast_target_loads "50 1000000:66"
@@ -517,6 +551,43 @@ on boot
 	write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
 	write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 100000
 	write /sys/devices/system/cpu/cpufreq/interactive/target_loads 85
+
+# Assign TCP buffer thresholds to be ceiling value of technology maximums
+# Increased technology maximums should be reflected here.
+	write /proc/sys/net/core/rmem_max  1048576
+	write /proc/sys/net/core/wmem_max  2097152
+
+on charger
+# Set CPU governor to powersave
+	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
+	write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
+	write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor powersave
+	write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor powersave
+	
+# Limit mix/max CPU/GPU/BUS frequencies
+	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 250000
+	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 250000
+
+	write /sys/devices/system/cpu/cpufreq/iks-cpufreq/max_freq 250000
+	write /sys/devices/system/cpu/cpufreq/iks-cpufreq/min_freq 250000
+
+	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 177
+
+	write /sys/class/devfreq/exynos5-busfreq-mif/max_freq 400000
+
+# Do not enable boost mode
+	write /sys/class/thermal/thermal_zone0/boost_mode 0
+
+# EHCI runtime enable for LPA
+	write /sys/devices/platform/s5p-ehci/power/control auto
+
+# Do not set any USB mode while charging
+	setprop sys.usb.config charging
+
+# Reduce and Lock Screen Brightness
+	chown system system /sys/class/backlight/panel/brightness
+	write /sys/class/backlight/panel/brightness 10
+	chmod 0444 /sys/class/backlight/panel/brightness
 
 ###
 # Services begin here
@@ -527,7 +598,7 @@ service watchdogd /sbin/watchdogd 10 20
 	class core
 
 # 3D init
-service pvrsrvctl /system/vendor/bin/pvrsrvctl --start --no-module
+service pvrsrvctl /system/bin/pvrsrvctl
 	class core
 	user root
 	group root
@@ -536,19 +607,19 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --start --no-module
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # daemon will drop to user/group system/media_rw after initializing
 # underlying files in /data/media wil be created with user and group media_rw (1023)
-service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -t 4 -l /data/media /mnt/shell/emulated
 	class late_start
 
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -t 4 -d /mnt/media_rw/sdcard1 /storage/sdcard1
 	class late_start
 	disabled
 
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk /storage/usbdisk
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -t 4 -d /mnt/media_rw/usbdisk /storage/usbdisk
 	class late_start
 	disabled
 
 # CBD Radio Daemon
-service cpboot-daemon /system/bin/cbd -d -txmm626x -bh -mh -p13
+service cpboot-daemon /system/bin/cbd -d -txmm626 -b h -m h -p13
 	class main
 	user root
 	group radio cache inet misc audio sdcard_rw log sdcard_r shell
@@ -560,7 +631,6 @@ service gpsd /system/bin/gpsd -c /system/etc/gps.xml
 	user gps
 	group system inet net_raw sdcard_rw
 	ioprio be 0
-	disabled
 
 # BT Tethering
 service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
@@ -581,7 +651,7 @@ service scranton_RD /system/bin/scranton_RD
 	oneshot
 
 # Workaround for broken in-call audio
-service bootsnd /system/bin/tinyplay /system/etc/sound/silence.wav -D 0 -d 0 -p 880
+	service bootsnd /system/bin/tinyplay /system/etc/sound/silence.wav -D 0 -d 0 -p 880
 	class late_start
 	user root
 	group audio
@@ -591,18 +661,26 @@ service bootsnd /system/bin/tinyplay /system/etc/sound/silence.wav -D 0 -d 0 -p 
 service mobicore /system/bin/mcDriverDaemon \
 	-r /system/vendor/firmware/mcRegistry/FFFFFFFF000000000000000000000001.drbin \
 	-r /system/vendor/firmware/mcRegistry/ffffffffd0000000000000000000000a.tlbin
-	class core
-	user system
-	group system
+	class main
+	user drmrpc
+	group drmrpc
+
+service battery_charger /sbin/healthd -c
+	class charger
+	critical
+
+# Synapse Kernel Control
+service synapse /sbin/synapse.sh
+    class core
+    user root
+    oneshot
 
 on property:sys.boot_completed=1
 	write /sys/block/mmcblk0/queue/scheduler row
-# Start gpsd late to prevent it from changing /data/system
-	start gpsd
 # Disable pulsing led on boot complete
-	exec /system/bin/sh /init.led.sh
-# Switch to perfomance mode after boot for better UX
-	setprop sys.perf.profile 2
+	write /sys/class/sec/led/led_pattern 0
+# Switch to balanced mode after boot for better UX
+	setprop sys.perf.profile 1
 
 # Start TZPR provisioning version check app but only
 # if sys.mobicoredaemon.enable property is set.
@@ -617,12 +695,6 @@ on property:ro.dumpstate.dmesg=1
 on property:ro.data.large_tcp_window_size=true
 	write /proc/sys/net/ipv4/tcp_adv_win_scale 2
 
-# MHL
-on property:ro.debuggable=1
-	chmod 0666 /sys/class/mhl/hdcp_support
-	chmod 0666 /sys/class/mhl/timing
-	chmod 0666 /sys/class/mhl/swing
-
 # CyanogenMod Performance Profiles
 # Powersave
 on property:sys.perf.profile=0
@@ -630,7 +702,9 @@ on property:sys.perf.profile=0
 	write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
 	write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor powersave
 	write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor powersave
+	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_min_lock 177
 	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 177
+	write /sys/class/devfreq/exynos5-busfreq-mif/min_freq 100000
 	write /sys/class/devfreq/exynos5-busfreq-mif/max_freq 400000
 	write /sys/class/thermal/thermal_zone0/boost_mode 0
 
@@ -640,16 +714,20 @@ on property:sys.perf.profile=1
 	write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor ondemand
 	write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor ondemand
 	write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor ondemand
-	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 480
+	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_min_lock 177
+	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 532
+	write /sys/class/devfreq/exynos5-busfreq-mif/min_freq 100000
 	write /sys/class/devfreq/exynos5-busfreq-mif/max_freq 800000
-	write /sys/class/thermal/thermal_zone0/boost_mode 0
+	write /sys/class/thermal/thermal_zone0/boost_mode 1
 
 # Performance
 on property:sys.perf.profile=2
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
-	write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor ondemand
-	write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor ondemand
-	write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor ondemand
-	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 532
+	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+	write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance
+	write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor performance
+	write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
+	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_min_lock 640
+	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 640
+	write /sys/class/devfreq/exynos5-busfreq-mif/min_freq 800000
 	write /sys/class/devfreq/exynos5-busfreq-mif/max_freq 800000
-	write /sys/class/thermal/thermal_zone0/boost_mode 1
+	write /sys/class/thermal/thermal_zone0/boost_mode 2
