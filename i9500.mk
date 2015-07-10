@@ -149,8 +149,9 @@ PRODUCT_PACKAGES += \
 	AdvancedDisplay
 
 # OTA Updates
-PRODUCT_PACKAGES += \
-	OTAUpdates
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/apps/OTAUpdates/OTAUpdates.apk:/system/app/OTAUpdates/OTAUpdates.apk \
+	$(LOCAL_PATH)/apps/OTAUpdates/libbypass.so:/system/lib/libbypass.so
 
 # Radio
 PRODUCT_COPY_FILES += \
