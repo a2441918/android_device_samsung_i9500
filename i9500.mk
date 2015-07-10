@@ -145,8 +145,7 @@ PRODUCT_PACKAGES += \
 
 # Extra Apps
 PRODUCT_PACKAGES += \
-	Screencast \
-	AdvancedDisplay
+	Screencast
 
 # OTA Updates
 PRODUCT_COPY_FILES += \
