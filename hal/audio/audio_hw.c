@@ -948,7 +948,7 @@ static void release_buffer(struct resampler_buffer_provider *buffer_provider,
 static ssize_t read_frames(struct stream_in *in, void *buffer, ssize_t frames)
 {
     ssize_t frames_wr = 0;
-    size_t frame_size = audio_stream_in_frame_size(&in->stream);
+    size_t frame_size = audio_stream_frame_size(&in->stream.common);
 
     while (frames_wr < frames) {
         size_t frames_rd = frames - frames_wr;
@@ -1001,7 +1001,7 @@ static size_t out_get_buffer_size(const struct audio_stream *stream)
     struct stream_out *out = (struct stream_out *)stream;
 
     return out->config.period_size *
-           audio_stream_out_frame_size((const struct audio_stream_out *)stream);
+           audio_stream_frame_size((struct audio_stream *)stream);
 }
 
 static audio_channel_mask_t out_get_channels(const struct audio_stream *stream)
@@ -1309,7 +1309,7 @@ exit:
 final_exit:
 
     if (ret != 0) {
-        usleep(bytes * 1000000 / audio_stream_out_frame_size(stream) /
+        usleep(bytes * 1000000 / audio_stream_frame_size(&stream->common) /
                out_get_sample_rate(&stream->common));
     }
 
@@ -1519,7 +1519,7 @@ static ssize_t in_read(struct audio_stream_in *stream, void* buffer,
     int ret = 0;
     struct stream_in *in = (struct stream_in *)stream;
     struct audio_device *adev = in->dev;
-    size_t frames_rq = bytes / audio_stream_in_frame_size(stream);
+    size_t frames_rq = bytes / audio_stream_frame_size(&stream->common);
 
     /*
      * acquiring hw device mutex systematically is useful if a low
@@ -1557,7 +1557,7 @@ static ssize_t in_read(struct audio_stream_in *stream, void* buffer,
 
 exit:
     if (ret < 0)
-        usleep(bytes * 1000000 / audio_stream_in_frame_size(stream) /
+        usleep(bytes * 1000000 / audio_stream_frame_size(&stream->common) /
                in_get_sample_rate(&stream->common));
 
     pthread_mutex_unlock(&in->lock);
@@ -1941,7 +1941,7 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
 
     in->buffer = malloc(pcm_config_in.period_size *
                         pcm_config_in.channels *
-                        audio_stream_in_frame_size(&in->stream));
+                        audio_stream_frame_size(&in->stream.common));
 
     if (!in->buffer) {
         ret = -ENOMEM;
