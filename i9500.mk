@@ -89,8 +89,8 @@ PRODUCT_PACKAGES += \
 	libion
 
 # GPU
-PRODUCT_PACKAGES += \
-	pvrsrvctl
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/bins/pvrsrvctl/pvrsrvctl:system/bin/pvrsrvctl
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
