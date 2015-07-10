@@ -176,15 +176,15 @@ public class ExynosXMM6360RIL extends RIL {
         }
     }
 
-    @Override
-    public void setDataAllowed(boolean allowed, Message result) {
-        Rlog.v(RILJ_LOG_TAG, "ExynosXMM6360RIL: setDataAllowed");
-
-        if (result != null) {
-            AsyncResult.forMessage(result, 0, null);
-            result.sendToTarget();
-        }
-    }
+//    @Override
+//    public void setDataAllowed(boolean allowed, Message result) {
+//        Rlog.v(RILJ_LOG_TAG, "ExynosXMM6360RIL: setDataAllowed");
+//
+//        if (result != null) {
+//            AsyncResult.forMessage(result, 0, null);
+//            result.sendToTarget();
+//        }
+//    }
 
     @Override
     public void setCellInfoListRate(int rateInMillis, Message response) {
