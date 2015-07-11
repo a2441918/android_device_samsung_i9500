@@ -69,9 +69,13 @@ PRODUCT_PACKAGES += \
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
-	make_ext4fs \
-	e2fsck \
-	setup_fs
+    e2fsck \
+    fibmap.f2fs \
+    fsck.f2fs \
+    make_ext4fs \
+    mkfs.f2fs \
+    resize2fs \
+    setup_fs
 
 # Charger
 PRODUCT_PACKAGES += \
