@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,16 +42,16 @@ PRODUCT_COPY_FILES += \
 
 # Audio
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
-	$(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
-	$(LOCAL_PATH)/audio/silence.wav:system/etc/sound/silence.wav
+	$(LOCAL_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf \
+	$(LOCAL_PATH)/configs/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+	$(LOCAL_PATH)/configs/audio/mixer_paths.xml:system/etc/mixer_paths.xml \
+	$(LOCAL_PATH)/configs/audio/silence.wav:system/etc/sound/silence.wav
 
 PRODUCT_PACKAGES += \
 	audio.a2dp.default \
 	audio.primary.universal5410 \
 	audio.r_submix.default \
 	audio.usb.default \
-	mixer_paths.xml \
 	tinymix \
 	tinyplay
 
@@ -73,18 +73,21 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Filesystem management tools
 PRODUCT_PACKAGES += \
 	make_ext4fs \
-	e2fsck \
 	setup_fs
 
 # Charger
 PRODUCT_PACKAGES += \
 	charger_res_images
 
+# Doze
+PRODUCT_PACKAGES += \
+    SamsungDoze
+
 # GPS
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/gps/gps.cer:system/etc/gps.cer \
-	$(LOCAL_PATH)/gps/gps.conf:system/etc/gps.conf \
-	$(LOCAL_PATH)/gps/gps.xml:system/etc/gps.xml
+	$(LOCAL_PATH)/configs/gps/gps.cer:system/etc/gps.cer \
+	$(LOCAL_PATH)/configs/gps/gps.conf:system/etc/gps.conf \
+	$(LOCAL_PATH)/configs/gps/gps.xml:system/etc/gps.xml
 
 # HW Composer
 PRODUCT_PACKAGES += \
@@ -98,9 +101,9 @@ PRODUCT_PACKAGES += \
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/idc/sec_touchscreen.idc:system/usr/idc/sec_touchscreen.idc \
-	$(LOCAL_PATH)/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
-	$(LOCAL_PATH)/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl
+	$(LOCAL_PATH)/configs/idc/sec_touchscreen.idc:system/usr/idc/sec_touchscreen.idc \
+	$(LOCAL_PATH)/configs/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
+	$(LOCAL_PATH)/configs/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl
 
 # Keystore
 PRODUCT_PACKAGES += \
@@ -115,9 +118,8 @@ PRODUCT_COPY_FILES += \
 	frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
-	frameworks/av/media/libstagefright/data/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml \
-	$(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
-	$(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
+	$(LOCAL_PATH)/configs/media/media_codecs.xml:system/etc/media_codecs.xml \
+	$(LOCAL_PATH)/configs/media/media_profiles.xml:system/etc/media_profiles.xml
 
 # USB
 PRODUCT_PACKAGES += \
@@ -144,11 +146,11 @@ PRODUCT_PACKAGES += \
 	com.android.nfc_extras
 
 # NFCEE access control + configuration
-NFCEE_ACCESS_PATH := $(LOCAL_PATH)/nfc/nfcee_access.xml
+NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfc/nfcee_access.xml
 
 PRODUCT_COPY_FILES += \
 	$(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml \
-	$(LOCAL_PATH)/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf
+	$(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -159,7 +161,14 @@ PRODUCT_PACKAGES += \
 	Screencast \
 	AdvancedDisplay
 
+# OTA Updates
+PRODUCT_PACKAGES += \
+	OTAUpdates
+
 # Radio
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/ril/sbin/cbd:system/bin/cbd
+
 PRODUCT_PACKAGES += \
 	libsecril-client \
 	libsecril-client-sap
@@ -169,6 +178,43 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	mobiledata.interfaces=pdp0,gprs,ppp0,rmnet0,rmnet1 \
 	ro.telephony.call_ring.multiple=false \
 	ro.telephony.call_ring.delay=3000
+
+# Synapse Ramdisk Stuff
+PRODUCT_PACKAGES += \
+	Synapse \
+	synapse.sh
+
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/synapse/config.json.generate:root/res/synapse/config.json.generate \
+	$(LOCAL_PATH)/synapse/config.json.generate.audio:root/res/synapse/config.json.generate.audio \
+	$(LOCAL_PATH)/synapse/config.json.generate.charger:root/res/synapse/config.json.generate.charger \
+	$(LOCAL_PATH)/synapse/config.json.generate.cpu:root/res/synapse/config.json.generate.cpu \
+	$(LOCAL_PATH)/synapse/config.json.generate.governor:root/res/synapse/config.json.generate.governor \
+	$(LOCAL_PATH)/synapse/config.json.generate.gpu:root/res/synapse/config.json.generate.gpu \
+	$(LOCAL_PATH)/synapse/config.json.generate.io:root/res/synapse/config.json.generate.io \
+	$(LOCAL_PATH)/synapse/config.json.generate.led:root/res/synapse/config.json.generate.led \
+	$(LOCAL_PATH)/synapse/config.json.generate.mem:root/res/synapse/config.json.generate.mem \
+	$(LOCAL_PATH)/synapse/config.json.generate.misc:root/res/synapse/config.json.generate.misc \
+	$(LOCAL_PATH)/synapse/config.json.generate.screen:root/res/synapse/config.json.generate.screen \
+	$(LOCAL_PATH)/synapse/config.json.generate.tools:root/res/synapse/config.json.generate.tools \
+	$(LOCAL_PATH)/synapse/config.json.generate.tweaks:root/res/synapse/config.json.generate.tweaks \
+	$(LOCAL_PATH)/synapse/sqlite3:root/res/synapse/sqlite3 \
+	$(LOCAL_PATH)/synapse/uci:root/res/synapse/uci \
+	$(LOCAL_PATH)/synapse/actions/bracket-option:root/res/synapse/actions/bracket-option \
+	$(LOCAL_PATH)/synapse/actions/buildprop:root/res/synapse/actions/buildprop \
+	$(LOCAL_PATH)/synapse/actions/charge-source:root/res/synapse/actions/charge-source \
+	$(LOCAL_PATH)/synapse/actions/colour:root/res/synapse/actions/colour \
+	$(LOCAL_PATH)/synapse/actions/devtools:root/res/synapse/actions/devtools \
+	$(LOCAL_PATH)/synapse/actions/dropcaches:root/res/synapse/actions/dropcaches \
+	$(LOCAL_PATH)/synapse/actions/dropcaches_prof:root/res/synapse/actions/dropcaches_prof \
+	$(LOCAL_PATH)/synapse/actions/generic:root/res/synapse/actions/generic \
+	$(LOCAL_PATH)/synapse/actions/governor:root/res/synapse/actions/governor \
+	$(LOCAL_PATH)/synapse/actions/gpuvolt:root/res/synapse/actions/gpuvolt \
+	$(LOCAL_PATH)/synapse/actions/ioset:root/res/synapse/actions/ioset \
+	$(LOCAL_PATH)/synapse/actions/led:root/res/synapse/actions/led \
+	$(LOCAL_PATH)/synapse/actions/printk:root/res/synapse/actions/printk \
+	$(LOCAL_PATH)/synapse/actions/sqlite:root/res/synapse/actions/sqlite \
+	$(LOCAL_PATH)/synapse/actions/voltage:root/res/synapse/actions/voltage
 
 # Samsung STK
 PRODUCT_PACKAGES += \
@@ -194,8 +240,8 @@ PRODUCT_PACKAGES += \
 	macloader
 
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
-	$(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf
+	$(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
+	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf
 	
 PRODUCT_PROPERTY_OVERRIDES += \
 	wifi.interface=wlan0
@@ -283,14 +329,14 @@ PRODUCT_PACKAGES += \
 	power.universal5410
 
 # Device uses high-density artwork where available
-PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi
+PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 	
 # call dalvik heap config
-$(call inherit-product-if-exists, device/samsung/i9500/configs/phone-xxhdpi-2048-dalvik-heap.mk)
+$(call inherit-product-if-exists, device/samsung/i9500/configs/env/phone-xxhdpi-2048-dalvik-heap.mk)
 
 # call hwui memory config
-$(call inherit-product-if-exists, device/samsung/i9500/configs/phone-xxhdpi-2048-hwui-memory.mk)
+$(call inherit-product-if-exists, device/samsung/i9500/configs/env/phone-xxhdpi-2048-hwui-memory.mk)
 
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/samsung/i9500/i9500-vendor.mk)

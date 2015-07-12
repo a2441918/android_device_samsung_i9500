@@ -1,0 +1,24 @@
+#!/system/xbin/busybox sh
+
+BB=/system/xbin/busybox;
+
+cat << CTAG
+
+{
+    sections: [
+		`. /res/synapse/config.json.generate.audio`,
+		`. /res/synapse/config.json.generate.charger`,
+		`. /res/synapse/config.json.generate.cpu`,
+		`. /res/synapse/config.json.generate.governor`,
+		`. /res/synapse/config.json.generate.gpu`,
+		`. /res/synapse/config.json.generate.io`,
+		`. /res/synapse/config.json.generate.led`,
+		`. /res/synapse/config.json.generate.mem`,
+		`. /res/synapse/config.json.generate.misc`,
+		`. /res/synapse/config.json.generate.screen`,
+		`. /res/synapse/config.json.generate.tools`,
+		`. /res/synapse/config.json.generate.tweaks`,
+    ]
+}
+CTAG
+
