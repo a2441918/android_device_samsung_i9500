@@ -193,7 +193,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Synapse Ramdisk Stuff
 PRODUCT_PACKAGES += \
 	Synapse \
-	synapse.sh
+	gearinit.sh
 
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/rootdir/etc/busybox:root/sbin/busybox \
