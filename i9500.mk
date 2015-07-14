@@ -160,7 +160,9 @@ PRODUCT_PACKAGES += \
 	install-recovery \
 	99SuperSUDaemon \
 	libsupol.so \
+	daemonsu \
 	su \
+	sugote \
 	supolicy
 
 # Radio
