@@ -32,9 +32,6 @@
     <!-- Default for UI touch sounds -->
     <bool name="def_sound_effects_enabled">false</bool>
 
-    <!-- Default for Settings.Global.GUEST_USER_ENABLED -->
-    <bool name="def_guest_user_enabled">false</bool>
-
     <!-- Default value of Settings.System.ENABLE_FORWARD_LOOKUP -->
     <integer name="def_forward_lookup">0</integer>
 
