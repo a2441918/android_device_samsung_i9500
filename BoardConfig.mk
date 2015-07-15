@@ -175,8 +175,6 @@ TARGET_USERIMAGES_USE_EXT4 := true
 # TWRP Specific
 DEVICE_RESOLUTION := 320x480
 
-TARGET_RECOVERY_DEVICE_MODULES += prebuilt_file_contexts
-
 RECOVERY_SDCARD_ON_DATA := true
 BOARD_HAS_NO_REAL_SDCARD := true
 
@@ -208,26 +206,6 @@ GREEN_LED_PATH := "/sys/class/sec/led/led_g/brightness"
 BLUE_LED_PATH := "/sys/class/sec/led/led_b/brightness"
 BACKLIGHT_PATH := "/sys/class/backlight/panel/brightness"
 CHARGING_ENABLED_PATH := "/sys/class/power_supply/battery/batt_lp_charging"
-
-# SELinux
-BOARD_SEPOLICY_DIRS += \
-    device/samsung/i9500/sepolicy
-
-BOARD_SEPOLICY_UNION := \
-    device.te \
-    drmserver.te \
-    file_contexts \
-    file.te \
-    gpsd.te \
-    mediaserver.te \
-    property_contexts \
-    property.te \
-    pvrsrvctl.te \
-    rild.te \
-    shell.te \
-    system_server.te \
-    ueventd.te \
-    wpa.te
 
 # Releasetools
 #TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)
