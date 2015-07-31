@@ -151,20 +151,8 @@ PRODUCT_PACKAGES += \
 
 # OTA Updates
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/apps/OTAUpdates/OTAUpdates.apk:/system/app/OTAUpdates/OTAUpdates.apk \
+	$(LOCAL_PATH)/apps/OTAUpdates/OTAUpdates.apk:/system/app/OTAUpdates.apk \
 	$(LOCAL_PATH)/apps/OTAUpdates/libbypass.so:/system/lib/libbypass.so
-
-# SuperSU
-PRODUCT_PACKAGES += \
-	SuperSU \
-	.installed_su_daemon \
-	install-recovery \
-	99SuperSUDaemon \
-	libsupol.so \
-	daemonsu \
-	su \
-	sugote \
-	supolicy
 
 # Radio
 PRODUCT_COPY_FILES += \
@@ -180,16 +168,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.telephony.call_ring.multiple=false \
 	ro.telephony.call_ring.delay=3000
 
-# GearCM init
-PRODUCT_PACKAGES += \
-	gearinit.sh
-
 # Synapse Kernel Control
 PRODUCT_PACKAGES += \
 	Synapse
 	
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/rootdir/etc/busybox:root/sbin/busybox \
+	$(LOCAL_PATH)/synapse/80SynapseInit:system/etc/init.d/80SynapseInit \
 	$(LOCAL_PATH)/synapse/config.json.generate:root/res/synapse/config.json.generate \
 	$(LOCAL_PATH)/synapse/config.json.generate.audio:root/res/synapse/config.json.generate.audio \
 	$(LOCAL_PATH)/synapse/config.json.generate.charger:root/res/synapse/config.json.generate.charger \

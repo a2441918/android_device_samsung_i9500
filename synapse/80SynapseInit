@@ -1,0 +1,8 @@
+#!/system/bin/sh
+
+mount -t rootfs -o remount,rw rootfs
+
+chown -R root.root /res/synapse
+chmod -R 777 /res/synapse
+ln -s /res/synapse/uci /sbin/uci
+/sbin/uci
