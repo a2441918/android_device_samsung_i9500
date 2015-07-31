@@ -14,12 +14,12 @@
     <!-- HTTP link will open a web page -->
     <!-- Direct Link overrides HTTP link -->
   <!-- <DirectUrl>DIRECT LINKS HERE</DirectUrl> -->
-  <HttpUrl></HttpUrl>
+  <HttpUrl>https://www.androidfilehost.com/?fid=24052804347784711</HttpUrl>
   <!-- What version are you issuing? -->
   <Android>5.0.1</Android>
   <!-- Providing File Checking for direct downloads. You SHOULD offer this for your users whether using HTTP or Direct -->
   <!-- OPTIONAL: Enter <CheckMD5 nil="true" /> offer MD5 checking -->
-  <CheckMD5></CheckMD5>
+  <CheckMD5>19751c02c4c85b2c658a1b9ca16d7096</CheckMD5>
   <!-- The filesize of your ROM -->
   <!-- Please enter this in BYTES only. Otherwise an incorrect value will be shown -->
   <FileSize type="integer">288358400</FileSize>
@@ -36,6 +36,6 @@
   <!-- Again, surround special characters with the CDATA tags or your XML will NOT parse -->
   <Changelog>### Changelog 20150731
 * Updated CM Sources
-* Coming Soon
+* Follow CM12.1 Changelog, until 20150731 Build.
 </Changelog>
 </ROM>
