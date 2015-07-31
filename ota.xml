@@ -36,6 +36,7 @@
   <!-- Again, surround special characters with the CDATA tags or your XML will NOT parse -->
   <Changelog>### Changelog 20150801
 * Updated CM Sources
-* Coming Soon
+* Follow CM12.1 Changelog, until 20150731 Build. Exclude F2FS, LL Camera Proprietaries and GPU Driver updates.
+* Please install SuperSU flashable zip (link on first post) to add Root support otherwise you won't be able to use Synapse, neither any root-dependent app.
 </Changelog>
 </ROM>
