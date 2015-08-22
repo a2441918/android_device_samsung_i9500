@@ -93,6 +93,10 @@ PRODUCT_PACKAGES += \
 	hwcomposer.exynos5 \
 	libion
 
+# Memory Tracker HAL
+PRODUCT_PACKAGES += \
+	memtrack.exynos5
+
 # GPU
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/bins/pvrsrvctl/pvrsrvctl:system/bin/pvrsrvctl
