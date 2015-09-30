@@ -44,7 +44,7 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
 TARGET_CPU_VARIANT := cortex-a15
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-ArchiDroid
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.8
 
 # Hint the compiler that we're using a quad-core CPU
 BOARD_GLOBAL_CFLAGS += -mvectorize-with-neon-quad
