@@ -574,35 +574,6 @@ on boot
 	write /proc/sys/net/core/rmem_max  1048576
 	write /proc/sys/net/core/wmem_max  2097152
 
-on charger
-# Set CPU governor to powersave
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
-	
-# Limit mix/max CPU/GPU/BUS frequencies
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 250000
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 250000
-
-	write /sys/devices/system/cpu/cpufreq/iks-cpufreq/min_freq 250000
-	write /sys/devices/system/cpu/cpufreq/iks-cpufreq/max_freq 250000
-
-	write /sys/devices/platform/pvrsrvkm.0/sgx_dvfs_max_lock 266
-
-	write /sys/class/devfreq/exynos5-busfreq-mif/max_freq 800000
-
-# Do not enable boost mode
-	write /sys/class/thermal/thermal_zone0/boost_mode 0
-
-# EHCI runtime enable for LPA
-	write /sys/devices/platform/s5p-ehci/power/control auto
-
-# Do not set any USB mode while charging
-	setprop sys.usb.config charging
-
-# Reduce and Lock Screen Brightness
-	chown system system /sys/class/backlight/panel/brightness
-	write /sys/class/backlight/panel/brightness 10
-	chmod 0444 /sys/class/backlight/panel/brightness
-
 ###
 # Services begin here
 ###
@@ -669,10 +640,6 @@ service mobicore /system/bin/mcDriverDaemon \
 	class main
 	user drmrpc
 	group drmrpc
-
-service battery_charger /charger
-	class charger
-	critical
 
 on property:sys.boot_completed=1
 # Set preferred IO scheduler after boot
