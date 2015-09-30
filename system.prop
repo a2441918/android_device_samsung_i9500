@@ -10,6 +10,10 @@ ro.zygote.disable_gl_preload=1
 # Disable Swaprect
 debug.sf.swaprect=0
 
+# Disable HDCP by default
+persist.hdmi.hdcp_enabled=false
+persist.sys.hdcp_checking=false
+
 # Force GPU Rendering
 persist.sys.ui.hw=1
 
