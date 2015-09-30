@@ -23,7 +23,7 @@ LOCAL_PATH := device/samsung/i9500
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# Boot animation
+# Boot Animation
 TARGET_SCREEN_HEIGHT := 960
 TARGET_SCREEN_WIDTH := 540
 
@@ -42,10 +42,26 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/recovery/etc/twrp.fstab:recovery/root/etc/twrp.fstab
 
+# AAPT Config
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
+
+# ADB Debugging
+ADDITIONAL_DEFAULT_PROPERTIES += \
+	ro.adb.secure=0 \
+	ro.debuggable=1 \
+	ro.secure=0
+
+# ANT+
+PRODUCT_PACKAGES += \
+	AntHalService \
+	com.dsi.ant.antradio_library \
+	libantradio
+
 # Audio
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf \
 	$(LOCAL_PATH)/configs/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+	$(LOCAL_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf \
 	$(LOCAL_PATH)/configs/audio/mixer_paths.xml:system/etc/mixer_paths.xml
 
 PRODUCT_PACKAGES += \
@@ -63,123 +79,27 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	persist.incall.workaround=true
 
 # Bluetooth
-PRODUCT_PROPERTY_OVERRIDES += \
-	bluetooth.hfp.client=1
-
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/bluetooth/bcm4335_prepatch.hcd:system/vendor/firmware/bcm4335_prepatch.hcd
-
-# Camera
-PRODUCT_PACKAGES += \
-	libhwjpeg
-
-# Filesystem management tools
-PRODUCT_PACKAGES += \
-	make_ext4fs \
-	e2fsck \
-	setup_fs
 
 # Charger
 PRODUCT_PACKAGES += \
 	charger \
 	charger_res_images
 
-# GPS
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/gps/gps.cer:system/etc/gps.cer \
-	$(LOCAL_PATH)/configs/gps/gps.conf:system/etc/gps.conf \
-	$(LOCAL_PATH)/configs/gps/gps.xml:system/etc/gps.xml \
-	$(LOCAL_PATH)/configs/gps/SuplRootCert:system/etc/SuplRootCert
-
-# HW Composer
+# FileSystem
 PRODUCT_PACKAGES += \
-	hwcomposer.exynos5 \
-	libion
+	make_ext4fs \
+	setup_fs
 
-# Memory Tracker HAL
+# GearCM Extras
 PRODUCT_PACKAGES += \
-	memtrack.exynos5
+	Screencast \
+	Synapse
 
-# GPU
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/bins/pvrsrvctl/pvrsrvctl:system/bin/pvrsrvctl
-
-# Keylayouts
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/idc/sec_touchscreen.idc:system/usr/idc/sec_touchscreen.idc \
-	$(LOCAL_PATH)/configs/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
-	$(LOCAL_PATH)/configs/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl
-
-# Keystore
-PRODUCT_PACKAGES += \
-	keystore.exynos5
-
-# Lights
-PRODUCT_PACKAGES += \
-	lights.universal5410
-
-# Media
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/media/media_codecs.xml:system/etc/media_codecs.xml \
-	$(LOCAL_PATH)/configs/media/media_profiles.xml:system/etc/media_profiles.xml
-
-# USB
-PRODUCT_PACKAGES += \
-	com.android.future.usb.accessory
-
-# MobiCore
-PRODUCT_PACKAGES += \
-	mcDriverDaemon
-
-# IR
-PRODUCT_PACKAGES += \
-	consumerir.universal5410
-
-# NFC
-PRODUCT_PACKAGES += \
-	com.android.nfc_extras \
-	libnfc-nci \
-	libnfc_nci_jni \
-	nfc_nci.universal5410 \
-	NfcNci \
-	Tag
-
-# NFCEE access control + configuration
-NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfc/nfcee_access.xml
-
-PRODUCT_COPY_FILES += \
-	$(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml \
-	$(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf
-
-# OMX
-PRODUCT_PACKAGES += \
-	libstagefrighthw
-
-# Extra Apps
-PRODUCT_PACKAGES += \
-	Screencast
-
-# OTA Updates
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/apps/OTAUpdates/OTAUpdates.apk:/system/app/OTAUpdates.apk \
-	$(LOCAL_PATH)/apps/OTAUpdates/libbypass.so:/system/lib/libbypass.so
-
-# Radio
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/ril/sbin/cbd:system/bin/cbd
-
-PRODUCT_PACKAGES += \
-	libsecril-client \
-	libsecril-client-sap
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.telephony.ril_class=ExynosXMM6360RIL
-
-# Synapse Kernel Control
-PRODUCT_PACKAGES += \
-	Synapse
-	
-PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/apps/OTAUpdates/libbypass.so:/system/lib/libbypass.so \
 	$(LOCAL_PATH)/synapse/80SynapseInit:system/etc/init.d/80SynapseInit \
 	$(LOCAL_PATH)/synapse/config.json.generate:root/res/synapse/config.json.generate \
 	$(LOCAL_PATH)/synapse/config.json.generate.audio:root/res/synapse/config.json.generate.audio \
@@ -212,76 +132,20 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/synapse/actions/sqlite:root/res/synapse/actions/sqlite \
 	$(LOCAL_PATH)/synapse/actions/voltage:root/res/synapse/actions/voltage
 
-# Samsung STK
-PRODUCT_PACKAGES += \
-	SamsungServiceMode
-
-# Torch
-PRODUCT_PACKAGES += \
-	Torch
-
-# ANT+
-PRODUCT_PACKAGES += \
-	AntHalService \
-	com.dsi.ant.antradio_library \
-	libantradio
-
-# Wi-Fi
-PRODUCT_PACKAGES += \
-	libnetcmdiface \
-	macloader
-
+# GPS
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
-	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf
-	
-PRODUCT_PROPERTY_OVERRIDES += \
-	wifi.interface=wlan0
+	$(LOCAL_PATH)/configs/gps/gps.cer:system/etc/gps.cer \
+	$(LOCAL_PATH)/configs/gps/gps.conf:system/etc/gps.conf \
+	$(LOCAL_PATH)/configs/gps/gps.xml:system/etc/gps.xml \
+	$(LOCAL_PATH)/configs/gps/SuplRootCert:system/etc/SuplRootCert
 
-# Allow tethering without provisioning app
-PRODUCT_PROPERTY_OVERRIDES += \
-	net.tethering.noprovisioning=true
+# GPU
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/bins/pvrsrvctl/pvrsrvctl:system/bin/pvrsrvctl
 
-# Set default USB interface
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-	persist.sys.usb.config=mtp
-
-# The OpenGL ES API level that is natively supported by this device.
-# This is a 16.16 fixed point number
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.opengles.version=131072 \
-	ro.hwui.disable_scissor_opt=true
-
-# Disable SELinux	
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.build.selinux=1
-	
-# Disable CM Superuser	
-PRODUCT_PROPERTY_OVERRIDES += \
-	persist.sys.root_access=0
-
-# Development & ADB authentication settings
-ADDITIONAL_DEFAULT_PROPERTIES += \
-	ro.adb.secure=0 \
-	ro.build.selinux=1 \
-	ro.debuggable=1 \
-	ro.secure=0
-
-# Extended JNI checks
-# The extended JNI checks will cause the system to run more slowly, but they can spot a variety of nasty bugs 
-# before they have a chance to cause problems.
-# Default=true for development builds, set by android buildsystem.
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.kernel.android.checkjni=0 \
-	dalvik.vm.checkjni=false
-
-# Enable Multithreaded Dexopt
-PRODUCT_PROPERTY_OVERRIDES += \
-	persist.sys.dalvik.multithread=true
-
-# ART Optimizations for Cortex-A15
-PRODUCT_PROPERTY_OVERRIDES += \
-	dalvik.vm.isa.arm.features=lpae,div
+	ro.hwui.disable_scissor_opt=true \
+	ro.opengles.version=131072
 
 # Hardware Permissions
 PRODUCT_COPY_FILES += \
@@ -292,8 +156,8 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
 	frameworks/native/data/etc/android.hardware.consumerir.xml:system/etc/permissions/android.hardware.consumerir.xml \
 	frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-	frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
 	frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
+	frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
 	frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
 	frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml \
 	frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
@@ -306,20 +170,131 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
 	frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
 	frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
-	frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 	frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+	frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 	frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
 	frameworks/native/data/etc/com.nxp.mifare.xml:system/etc/permissions/com.nxp.mifare.xml \
 	frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
+
+# HW Composer
+PRODUCT_PACKAGES += \
+	hwcomposer.exynos5 \
+	libion
+
+# IR
+PRODUCT_PACKAGES += \
+	consumerir.universal5410
+
+# Keylayouts
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/idc/sec_touchscreen.idc:system/usr/idc/sec_touchscreen.idc \
+	$(LOCAL_PATH)/configs/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
+	$(LOCAL_PATH)/configs/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl
+
+# Keystore
+PRODUCT_PACKAGES += \
+	keystore.exynos5
+
+# Lights
+PRODUCT_PACKAGES += \
+	lights.universal5410
+
+# Media
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/media/media_codecs.xml:system/etc/media_codecs.xml \
+	$(LOCAL_PATH)/configs/media/media_profiles.xml:system/etc/media_profiles.xml
+
+# Memory Tracker HAL
+PRODUCT_PACKAGES += \
+	memtrack.exynos5
+
+# MobiCore
+PRODUCT_PACKAGES += \
+	mcDriverDaemon
+
+# NFC
+PRODUCT_PACKAGES += \
+	NfcNci \
+	Tag \
+	com.android.nfc_extras \
+	libnfc-nci \
+	libnfc_nci_jni \
+	nfc_nci.universal5410
+
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+	$(LOCAL_PATH)/configs/nfc/nfcee_access.xml:system/etc/nfcee_access.xml
+
+# OMX
+PRODUCT_PACKAGES += \
+	libstagefrighthw
 
 # Power
 PRODUCT_PACKAGES += \
 	power.universal5410
 
-# Device uses high-density artwork where available
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xhdpi
-	
+# Radio
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/ril/sbin/cbd:system/bin/cbd
+
+PRODUCT_PACKAGES += \
+	libsecril-client \
+	libsecril-client-sap \
+	SamsungServiceMode
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.data.large_tcp_window_size=true \
+	ro.telephony.ril_class=ExynosXMM6360RIL
+
+# SELinux
+ADDITIONAL_DEFAULT_PROPERTIES += \
+	ro.build.selinux=1
+
+# SuperSU
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.sys.root_access=0
+
+# Tethering Config
+PRODUCT_PROPERTY_OVERRIDES += \
+	net.tethering.noprovisioning=true
+
+# Torch
+PRODUCT_PACKAGES += \
+	Torch
+
+# USB
+PRODUCT_PACKAGES += \
+	com.android.future.usb.accessory
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+	persist.sys.usb.config=mtp
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.sys.isUsbOtgEnabled=true
+
+# VM Config
+PRODUCT_PROPERTY_OVERRIDES += \
+	dalvik.vm.checkjni=false \
+	dalvik.vm.dex2oat-filter=everything \
+	dalvik.vm.dex2oat-flags=--no-watch-dog \
+	dalvik.vm.image-dex2oat-filter=everything \
+	dalvik.vm.isa.arm.features=lpae,div \
+	ro.kernel.android.checkjni=0 \
+	persist.sys.dalvik.multithread=true
+
+# Wi-Fi
+PRODUCT_PACKAGES += \
+	libnetcmdiface \
+	macloader \
+
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
+	$(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	wifi.interface=wlan0 \
+	wifi.supplicant_scan_interval=15
+
 # call dalvik heap config
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)
 

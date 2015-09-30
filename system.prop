@@ -10,43 +10,15 @@ ro.zygote.disable_gl_preload=1
 # Disable Swaprect
 debug.sf.swaprect=0
 
-# Disable HDCP by default
-persist.hdmi.hdcp_enabled=false
-persist.sys.hdcp_checking=never
-
 # Force GPU Rendering
 persist.sys.ui.hw=1
 
 # Prefer 16bpp Transparency
 persist.sys.prefer_16bpp=1
 
-## Screen ##
-
-# 1080p Screen Density
-ro.sf.lcd_density=480
-
-## Radio ##
-
-# Samsung RIL Config
-rild.libpath=/system/lib/libsec-ril.so
-rild.libargs=-d /dev/ttyS0
-
-# Max Supported HSDPA Category
-ro.ril.hsdpa.category=24
-
-# Max Supported HSUPA Category
-ro.ril.hsupa.category=6
-
-# Max Supported GPRS/EDGE Category
-ro.ril.gprsclass=12
-
-# Enable HSPA+ 42 Mbps
-ro.ril.hsxpa=3
-
-## NFC ##
-
-# Reduce Debug Level
-nfc.app_log_level=0
+# Disable HDCP by default
+persist.hdmi.hdcp_enabled=false
+persist.sys.hdcp_checking=never
 
 ## Memory ##
 
@@ -56,7 +28,41 @@ persist.sys.purgeable_assets=1
 # Enable Kernel Samepage Merging
 ro.ksm.default=1
 
+## NFC ##
+
+# Reduce Debug Level
+nfc.app_log_level=0
+
 ## OTA Updates ##
-ro.ota.romname=GearCM11
-ro.ota.version=20150801
+
+# ROM Manifest
 ro.ota.manifest=https://raw.githubusercontent.com/GearCM/android_device_samsung_i9500/cm-11.0_new/ota.xml
+
+# ROM Name
+ro.ota.romname=GearCM11
+
+# ROM Version
+ro.ota.version=20150928
+
+## Radio ##
+
+# Samsung RIL Config
+rild.libargs=-d /dev/ttyS0
+rild.libpath=/system/lib/libsec-ril.so
+
+# Max Supported GPRS/EDGE Category
+ro.ril.gprsclass=12
+
+# Max Supported HSDPA Category
+ro.ril.hsdpa.category=24
+
+# Max Supported HSUPA Category
+ro.ril.hsupa.category=6
+
+# Enable HSPA+ 42 Mbps
+ro.ril.hsxpa=3
+
+## Screen ##
+
+# 1080p Screen Density
+ro.sf.lcd_density=480
