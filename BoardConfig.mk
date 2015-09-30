@@ -166,7 +166,6 @@ BOARD_SEPOLICY_UNION := \
     pvrsrvctl.te \
     rild.te \
     shell.te \
-    system_server.te \
     ueventd.te \
     wpa.te
 
