@@ -4173,6 +4173,9 @@ typedef struct {
 #define RIL_UNSOL_UTS_GET_UNREAD_SMS_STATUS 11031
 #define RIL_UNSOL_MIP_CONNECT_STATUS 11032
 
+/* SNDMGR */
+#define RIL_UNSOL_SNDMGR_WB_AMR_REPORT 20017
+
 /***********************************************************************/
 
 
