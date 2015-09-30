@@ -22,9 +22,6 @@ persist.sys.use_16bpp_alpha=1
 # Allow purging of assets
 persist.sys.purgeable_assets=1
 
-# Disable Kernel Samepage Merging
-ro.ksm.default=0
-
 ## NFC ##
 
 # Reduce Debug Level
