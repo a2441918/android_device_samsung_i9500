@@ -12,7 +12,7 @@ debug.sf.swaprect=0
 
 # Disable HDCP by default
 persist.hdmi.hdcp_enabled=false
-persist.sys.hdcp_checking=false
+persist.sys.hdcp_checking=never
 
 # Force GPU Rendering
 persist.sys.ui.hw=1
