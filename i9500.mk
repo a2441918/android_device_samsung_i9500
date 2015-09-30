@@ -55,10 +55,9 @@ PRODUCT_PACKAGES += \
 	tinymix
 
 PRODUCT_PROPERTY_OVERRIDES += \
-	audio.offload.disable=1
-	
-PRODUCT_PROPERTY_OVERRIDES += \
-	af.fast_track_multiplier=1
+	af.fast_track_multiplier=1 \
+	audio.offload.disable=1 \
+	persist.incall.workaround=true
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
