@@ -559,8 +559,8 @@ static void start_bt_sco(struct audio_device *adev)
 
     ALOGV("%s: Opening SCO PCMs", __func__);
 
-    bool use_dyn_wb_amr = property_get_bool("persist.call.dynamic.wb_amr", false);
-    bool using_chn_modem = property_get_bool("persist.device.uses.chn_modem", false);
+    bool use_dyn_wb_amr = 0;
+    bool using_chn_modem = 0;
 
     if (!use_dyn_wb_amr) {
         if (!using_chn_modem) {
@@ -648,8 +648,8 @@ static int start_voice_call(struct audio_device *adev)
 
     ALOGV("%s: Opening voice PCMs", __func__);
 
-    bool use_dyn_wb_amr = property_get_bool("persist.call.dynamic.wb_amr", false);
-    bool using_chn_modem = property_get_bool("persist.device.uses.chn_modem", false);
+    bool use_dyn_wb_amr = 0;
+    bool using_chn_modem = 0;
 
     if (!use_dyn_wb_amr) {
         if (!using_chn_modem) {
@@ -747,7 +747,7 @@ static void adev_set_wb_amr_callback(void *data, int enable)
 
     pthread_mutex_lock(&adev->lock);
 
-    bool use_dyn_wb_amr = property_get_bool("persist.call.dynamic.wb_amr", false);
+    bool use_dyn_wb_amr = 0;
 
     if (adev->wb_amr != enable) {
         adev->wb_amr = enable;
@@ -2155,8 +2155,8 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev->mode = AUDIO_MODE_NORMAL;
     adev->voice_volume = 1.0f;
 
-    bool use_dyn_wb_amr = property_get_bool("persist.call.dynamic.wb_amr", false);
-    bool using_chn_modem = property_get_bool("persist.device.uses.chn_modem", false);
+    bool use_dyn_wb_amr = 0;
+    bool using_chn_modem = 0;
 
     if (!use_dyn_wb_amr) {
         if (!using_chn_modem) {
