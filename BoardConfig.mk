@@ -144,36 +144,31 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 9604939776
 
 # Recovery
 BOARD_HAS_DOWNLOAD_MODE := true
-
 BOARD_HAS_LARGE_FILESYSTEM := true
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5410
-
 TARGET_USERIMAGES_USE_EXT4 := true
 
-# TWRP Specific
-DEVICE_RESOLUTION := 320x480
+# SELinux
+BOARD_SEPOLICY_DIRS += \
+    device/samsung/i9500/sepolicy
 
-RECOVERY_SDCARD_ON_DATA := true
-BOARD_HAS_NO_REAL_SDCARD := true
-
-TW_INTERNAL_STORAGE_PATH := "/data/media/0"
-TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-TW_EXTERNAL_STORAGE_PATH := "/external_sd"
-TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
-
-TW_NO_REBOOT_BOOTLOADER := true
-TW_HAS_DOWNLOAD_MODE := true
-
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel/brightness"
-TW_MAX_BRIGHTNESS := 255
-
-TW_INCLUDE_L_CRYPTO := true
-
-TW_NO_EXFAT_FUSE := true
-TW_EXCLUDE_SUPERSU := true
-TW_EXCLUDE_ENCRYPTED_BACKUPS := true
-TW_DISABLE_TTF := true
+BOARD_SEPOLICY_UNION := \
+    bluetooth.te \
+    device.te \
+    drmserver.te \
+    file_contexts \
+    file.te \
+    gpsd.te \
+    mediaserver.te \
+    property_contexts \
+    property.te \
+    pvrsrvctl.te \
+    rild.te \
+    shell.te \
+    system_server.te \
+    ueventd.te \
+    wpa.te
 
 # Charging mode
 BOARD_CHARGER_ENABLE_SUSPEND := true

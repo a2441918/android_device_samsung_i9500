@@ -254,7 +254,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Disable SELinux	
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.build.selinux=0
+	ro.build.selinux=1
 	
 # Disable CM Superuser	
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -263,7 +263,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Development & ADB authentication settings
 ADDITIONAL_DEFAULT_PROPERTIES += \
 	ro.adb.secure=0 \
-	ro.build.selinux=0 \
+	ro.build.selinux=1 \
 	ro.debuggable=1 \
 	ro.secure=0
 
