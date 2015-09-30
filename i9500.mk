@@ -134,12 +134,12 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
+	com.android.nfc_extras \
 	libnfc-nci \
 	libnfc_nci_jni \
 	nfc_nci.universal5410 \
 	NfcNci \
-	Tag \
-	com.android.nfc_extras
+	Tag
 
 # NFCEE access control + configuration
 NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfc/nfcee_access.xml
@@ -241,15 +241,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Allow tethering without provisioning app
 PRODUCT_PROPERTY_OVERRIDES += \
 	net.tethering.noprovisioning=true
-
-# Misc dependency packages
-PRODUCT_PACKAGES += \
-	ebtables \
-	ethertypes \
-	curl \
-	libnl_2 \
-	libbson \
-	libxml2
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
