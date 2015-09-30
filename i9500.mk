@@ -252,7 +252,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.opengles.version=131072
+	ro.opengles.version=131072 \
+	ro.hwui.disable_scissor_opt=true
 
 # Disable SELinux	
 PRODUCT_PROPERTY_OVERRIDES += \
