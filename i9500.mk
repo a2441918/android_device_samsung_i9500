@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+USE_CAMERA_STUB := true
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 LOCAL_PATH := device/samsung/i9500
@@ -69,7 +71,6 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-	camera.universal5410 \
 	libhwjpeg
 
 # Filesystem management tools
