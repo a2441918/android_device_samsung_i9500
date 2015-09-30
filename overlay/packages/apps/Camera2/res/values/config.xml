@@ -16,15 +16,7 @@
 
 <!-- Camera app resources that may need to be customized
      for different hardware or product builds. -->
-<resources>
-    <!-- Zero shutter lag mode -->
-    <bool name="enableZSL">true</bool>
-    <!-- Decode YV16 format on Samsung HDR hardware -->
-    <bool name="needsSamsungHDRFormat">true</bool>
-
-    <!-- Allow HDR and ZSL together -->
-    <bool name="enableHDRWithZSL">true</bool>
-    
+<resources>  
     <!-- Opt-out of threaded camera startup -->
     <bool name="enableThreadedCameraStartup">false</bool>
 </resources>
