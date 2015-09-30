@@ -7,26 +7,23 @@
 # Disable GL Library Preload
 ro.zygote.disable_gl_preload=1
 
-# Disable Swaprect
-debug.sf.swaprect=0
+# Disable HDCP by default
+persist.hdmi.hdcp_enabled=false
+persist.sys.hdcp_checking=never
 
 # Force GPU Rendering
 persist.sys.ui.hw=1
 
 # Prefer 16bpp Transparency
-persist.sys.prefer_16bpp=1
-
-# Disable HDCP by default
-persist.hdmi.hdcp_enabled=false
-persist.sys.hdcp_checking=never
+persist.sys.use_16bpp_alpha=1
 
 ## Memory ##
 
 # Allow purging of assets
 persist.sys.purgeable_assets=1
 
-# Enable Kernel Samepage Merging
-ro.ksm.default=1
+# Disable Kernel Samepage Merging
+ro.ksm.default=0
 
 ## NFC ##
 
