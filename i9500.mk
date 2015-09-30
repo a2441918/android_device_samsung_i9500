@@ -57,6 +57,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	af.fast_track_multiplier=1 \
 	audio.offload.disable=1 \
+	media.aac_51_output_enabled=true \
 	persist.incall.workaround=true
 
 # Bluetooth
