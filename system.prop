@@ -30,13 +30,13 @@ nfc.app_log_level=0
 ## OTA Updates ##
 
 # ROM Manifest
-ro.ota.manifest=https://raw.githubusercontent.com/GearCM/android_device_samsung_i9500/cm-11.0_new/ota.xml
+ro.ota.manifest=https://raw.githubusercontent.com/GearCM/android_device_samsung_i9500/cm-11.0_EOL/ota.xml
 
 # ROM Name
 ro.ota.romname=GearCM11
 
 # ROM Version
-ro.ota.version=20150928
+ro.ota.version=20151001
 
 ## Radio ##
 
