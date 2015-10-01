@@ -2,24 +2,26 @@
 <ROM>
   <!-- Your ROM Name -->
   <RomName>GearCM 11</RomName>
-  <VersionName>20150801</VersionName>
+  <VersionName>20151001</VersionName>
   <!-- Your ROM version. MUST be incrementally larger than previous versions -->
   <!-- Do NOT use letters in your version number. Integers only -->
   <!-- Previous version will be read from the build.prop -->
-  <VersionNumber type="integer">20150801</VersionNumber>
+  <VersionNumber type="integer">20151001</VersionNumber>
   <!-- Linking to your files -->
-    <!-- <DirectUrl><![CDATA[http://www.example.com?file=file.zip?somethingelse&anotherthing]]></DirectUrl> -->
-    <!-- Use the above format if your URL has special characters in then, like an (&) ampersand -->
+    <!-- <DirectUrl><![CDATA[http://www.example.com?file=file.zip?somethingelse * anotherthing]]></DirectUrl> -->
+    <!-- Use the above format if your URL has special characters in then, like an ( * ) ampersand -->
     <!-- Enter <DirectUrl nil="true /> or <HttpUrl nil="true /> to indicate you won't be using a type of URL -->
     <!-- HTTP link will open a web page -->
     <!-- Direct Link overrides HTTP link -->
   <!-- <DirectUrl>DIRECT LINKS HERE</DirectUrl> -->
-  <HttpUrl>https://www.androidfilehost.com/?fid=24052804347785234</HttpUrl>
+  <HttpUrl>https://www.androidfilehost.com/?fid=24052804347826405</HttpUrl>
+  <!-- <HttpUrl>HTTP URL HERE</HttpUrl> -->
   <!-- What version are you issuing? -->
   <Android>4.4.4</Android>
   <!-- Providing File Checking for direct downloads. You SHOULD offer this for your users whether using HTTP or Direct -->
   <!-- OPTIONAL: Enter <CheckMD5 nil="true" /> offer MD5 checking -->
-  <CheckMD5>e5083b9196c21d6b76133265e03380e6</CheckMD5>
+  <CheckMD5 nil="true" />
+  <CheckMD5>a8b02af6d73ad271d54964a330a96a8c</CheckMD5>
   <!-- The filesize of your ROM -->
   <!-- Please enter this in BYTES only. Otherwise an incorrect value will be shown -->
   <FileSize type="integer"></FileSize>
@@ -28,15 +30,14 @@
   <Developer>GearCM: Alberto96, NBruderman</Developer>
   <!-- Your ROM or Developer Website. Can be a personal site or your XDA/forum thread -->
   <!-- OPTIONAL: Enter <Website nil="true" /> to hide this -->
-  <WebsiteURL>http://forum.xda-developers.com/galaxy-s4/i9500-orig-develop/gearcm-optimized-cyanogenmod-12-1-t3091958</WebsiteURL>
+  <WebsiteURL>http://forum.xda-developers.com/showthread.php?t=2624467</WebsiteURL>
   <!-- Your Donate URL -->
   <!-- OPTIONAL: Enter <DonateURL nil="true" /> to hide this -->
   <DonateURL>http://forum.xda-developers.com/donatetome.php?u=2386505</DonateURL>
   <!-- Put the changelog here... Use Markdown to format it -->
   <!-- Again, surround special characters with the CDATA tags or your XML will NOT parse -->
-  <Changelog>### Changelog 20150801
-* Updated CM Sources
-* Follow CM12.1 Changelog, until 20150731 Build. Exclude F2FS, LL Camera Proprietaries and GPU Driver updates.
+  <Changelog>### Changelog 20151001
+* Follow GearCM 12.1 Changelog, until 20151001 Build. Exclude F2FS, LL Camera Proprietaries and GPU Driver updates.
 * Please install SuperSU flashable zip (link on first post) to add Root support otherwise you won't be able to use Synapse, neither any root-dependent app.
 </Changelog>
 </ROM>
