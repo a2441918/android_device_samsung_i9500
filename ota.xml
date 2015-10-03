@@ -2,11 +2,11 @@
 <ROM>
   <!-- Your ROM Name -->
   <RomName>GearCM 11</RomName>
-  <VersionName>20151001</VersionName>
+  <VersionName>20151003</VersionName>
   <!-- Your ROM version. MUST be incrementally larger than previous versions -->
   <!-- Do NOT use letters in your version number. Integers only -->
   <!-- Previous version will be read from the build.prop -->
-  <VersionNumber type="integer">20151001</VersionNumber>
+  <VersionNumber type="integer">20151003</VersionNumber>
   <!-- Linking to your files -->
     <!-- <DirectUrl><![CDATA[http://www.example.com?file=file.zip?somethingelse * anotherthing]]></DirectUrl> -->
     <!-- Use the above format if your URL has special characters in then, like an ( * ) ampersand -->
@@ -14,17 +14,17 @@
     <!-- HTTP link will open a web page -->
     <!-- Direct Link overrides HTTP link -->
   <!-- <DirectUrl>DIRECT LINKS HERE</DirectUrl> -->
-  <HttpUrl>https://www.androidfilehost.com/?fid=24052804347826405</HttpUrl>
+  <HttpUrl>https://www.androidfilehost.com/?fid=24052804347828865</HttpUrl>
   <!-- <HttpUrl>HTTP URL HERE</HttpUrl> -->
   <!-- What version are you issuing? -->
   <Android>4.4.4</Android>
   <!-- Providing File Checking for direct downloads. You SHOULD offer this for your users whether using HTTP or Direct -->
   <!-- OPTIONAL: Enter <CheckMD5 nil="true" /> offer MD5 checking -->
   <CheckMD5 nil="true" />
-  <CheckMD5>a8b02af6d73ad271d54964a330a96a8c</CheckMD5>
+  <CheckMD5>ee6a1b8f0963ab8626875cbe9ac6ecd9</CheckMD5>
   <!-- The filesize of your ROM -->
   <!-- Please enter this in BYTES only. Otherwise an incorrect value will be shown -->
-  <FileSize type="integer"></FileSize>
+  <FileSize type="integer">242524702</FileSize>
   <!-- Developer or Team name. You can put anything here, even a couple of names -->
   <!-- OPTIONAL: Enter <Developer nil="true" /> to hide this -->
   <Developer>GearCM: Alberto96, NBruderman</Developer>
@@ -36,8 +36,9 @@
   <DonateURL>http://forum.xda-developers.com/donatetome.php?u=2386505</DonateURL>
   <!-- Put the changelog here... Use Markdown to format it -->
   <!-- Again, surround special characters with the CDATA tags or your XML will NOT parse -->
-  <Changelog>### Changelog 20151001
-* Follow GearCM 12.1 Changelog, until 20151001 Build. Exclude F2FS, LL Camera Proprietaries and GPU Driver updates.
-* Please install SuperSU flashable zip (link on first post) to add Root support otherwise you won't be able to use Synapse, neither any root-dependent app.
+  <Changelog>### Changelog 20151003
+ * Fixed Manual Network Search and GPS (1 - adapted LL fix, 2 - using proper KK blobs)
+ * Follow GearCM 12.1 Changelog, until 20151003 Build. Exclude F2FS, LL Camera Proprietaries and GPU Driver updates.
+ * Please install SuperSU flashable zip (link on first post) to add Root support otherwise you won't be able to use Synapse, neither any root-dependent app.
 </Changelog>
 </ROM>
