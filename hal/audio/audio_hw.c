@@ -595,8 +595,8 @@ static void start_bt_sco(struct audio_device *adev)
 
     ALOGV("%s: Opening SCO PCMs", __func__);
 
-    bool use_dyn_wb_amr = property_get_bool("persist.call.dynamic.wb_amr", false);
-    bool using_chn_modem = property_get_bool("persist.device.uses.chn_modem", false);
+    bool use_dyn_wb_amr = 0;
+    bool using_chn_modem = 0;
 
     if (!use_dyn_wb_amr) {
         if (!using_chn_modem) {
