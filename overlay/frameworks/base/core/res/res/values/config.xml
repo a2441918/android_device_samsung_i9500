@@ -389,14 +389,5 @@
          setting is used to determine, whether lidOpenRotation has to be
          applied. -->
     <bool name="config_hasRemovableLid">true</bool>
-
-    <!-- If there is no sysfs-based control mechanism, enable this -->
-    <bool name="useCameraInterface">false</bool>
-
-    <!-- Full path to the sysfs toggle -->
-    <string name="flashDevice">/sys/class/leds/torch-sec1/brightness</string>
-
-    <!-- On setting -->
-    <integer name="valueOn">255</integer>
 	
 </resources>
